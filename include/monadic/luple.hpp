@@ -46,9 +46,6 @@ constexpr auto luple(X&&...x){ // this pragmatic tuple implementation compiles f
   })(capture(forward<X>(x))...); // this allows to store references and move temporaries without overhead...
 }
 
-
-
-
 auto nop = [](auto...){return 1;}; // required for parameter pack expansion
 
 auto call = [](auto f, auto&&...x){
@@ -62,6 +59,12 @@ auto each=[](auto...x){
   return [=](auto f){
     nop( call(f, x)... );
     return luple(x...);
+  };
+};
+
+auto map=[](auto&&...x){
+  return [=](auto F){
+    return luple( F(x)... );
   };
 };
 
