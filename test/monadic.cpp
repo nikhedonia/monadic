@@ -21,7 +21,7 @@ Describe(monadicTestcase) {
       Assert::That( i , Equals(3) );
     }
 
-    It(should_handle_map_continator){
+    It(should_map){
       int i=0;
       int toExpected[3]={0, 1, 2};
       luple(1, 2, 3)(map)([](auto x){
@@ -30,6 +30,15 @@ Describe(monadicTestcase) {
           Assert::That( item ,  Equals( toExpected[i++] ) );
       });
 
+      Assert::That( i , Equals(3) );
+    }
+
+    It(should_append){
+      int i=0;
+      int toExpected[3]={1, 2, 3};
+      luple(1)(append)(2,3)(each)([&](auto item){
+          Assert::That( item ,  Equals( toExpected[i++] ) );
+      });
       Assert::That( i , Equals(3) );
     }
 

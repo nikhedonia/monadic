@@ -69,6 +69,32 @@ auto map=[](auto&&...x){
 };
 
 
+auto append=[](auto&&...x){
+  return ([](auto...y){
+    return [=](auto&&...E){
+      return luple(y.get()...,forward<decltype(E)>(E)...);
+    };
+  })(capture(forward<decltype(x)>(x))...);
+};
+
+auto prepend=[](auto&&...x){
+  return ([](auto...y){
+    return [=](auto&&...E){
+      return luple(forward<decltype(E)>(E)...,y.get()...);
+    };
+  })(capture(forward<decltype(x)>(x))...);
+};
+
+auto concat=[](auto&&...x){
+  return ([](auto...y){
+    return [=](auto L){
+      return L([=](auto&&...e){
+        return luple(y.get()... , forward<decltype(e)>(e)... );
+      });
+    };
+  })(capture(forward<decltype(x)>(x))...);
+};
+
 
 
 }
