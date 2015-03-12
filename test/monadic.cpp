@@ -42,6 +42,13 @@ Describe(monadicTestcase) {
       Assert::That( i , Equals(3) );
     }
 
+    It(should_get){
+      Assert::That( luple(1,2,3)(get<0>), Equals(1) );
+      Assert::That( luple(1,2,3)(get<1>), Equals(2) );
+      Assert::That( luple(1,2,3)(get<2>), Equals(3) );
+
+    }
+
 
 
   };

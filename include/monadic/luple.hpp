@@ -12,6 +12,7 @@ using std::is_same;
 using std::declval;
 using std::decay_t;
 using std::enable_if_t;
+using std::is_convertible;
 using std::size_t;
 
 template<class T>
@@ -19,7 +20,7 @@ struct Capture{ // container for perfectly forwarded values with value-semantics
   T value;
 
   template<class X,
-    REQUIRES(std::is_convertible<X,T>()) >
+    REQUIRES(is_convertible<X,T>()) >
   constexpr Capture(X&&x)
   : value( std::forward<X>(x) ){}
 
@@ -33,7 +34,7 @@ struct Capture{ // container for perfectly forwarded values with value-semantics
 };
 
 template<class X>
-constexpr auto capture(X&&x){
+constexpr decltype(auto) capture(X&&x){
   return Capture<X>(forward<X>(x));
 }
 
@@ -89,12 +90,36 @@ auto concat=[](auto&&...x){
   return ([](auto...y){
     return [=](auto L){
       return L([=](auto&&...e){
-        return luple(y.get()... , forward<decltype(e)>(e)... );
+        return luple(y.get()... , FORWARD(e)... );
       });
     };
   })(capture(forward<decltype(x)>(x))...);
 };
 
+
+
+template<unsigned i>
+struct Get{
+
+  template<
+    unsigned j=i,
+    class X, class...Xs,
+    REQUIRES(j>0)>
+  auto operator()(X&&x, Xs&&...xs)const{
+    return Get<i-1>()( FORWARD(xs)...);
+  }
+
+  template<
+    unsigned j=i,
+    class X, class...Xs,
+    REQUIRES(j==0)>
+  auto operator()(X&&x, Xs...)const{
+    return FORWARD(x);
+  }
+};
+
+template<unsigned i>
+constexpr static auto get = Get<i>();
 
 
 }
