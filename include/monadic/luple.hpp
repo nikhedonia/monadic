@@ -13,6 +13,7 @@ using std::declval;
 using std::decay_t;
 using std::enable_if_t;
 using std::is_convertible;
+using std::integral_constant;
 using std::size_t;
 
 template<class T>
@@ -98,11 +99,11 @@ auto concat=[](auto&&...x){
 
 
 
-template<unsigned i>
+template<size_t i>
 struct Get{
 
   template<
-    unsigned j=i,
+    size_t j=i,
     class X, class...Xs,
     REQUIRES(j>0)>
   auto operator()(X&&x, Xs&&...xs)const{
@@ -110,7 +111,7 @@ struct Get{
   }
 
   template<
-    unsigned j=i,
+    size_t j=i,
     class X, class...Xs,
     REQUIRES(j==0)>
   auto operator()(X&&x, Xs...)const{
@@ -118,8 +119,20 @@ struct Get{
   }
 };
 
-template<unsigned i>
+template<size_t i>
 constexpr static auto get = Get<i>();
+
+
+template<char...X> constexpr auto operator "" _N(){
+    return integral_constant<size_t,C2N( (X-'0')... )>();
+}
+
+
+auto pick = [](auto...x){
+  return [=](auto...i){
+    return luple( get<decltype(i)::value>(x...) ... );
+  };
+};
 
 
 }

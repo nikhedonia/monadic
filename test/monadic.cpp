@@ -46,7 +46,15 @@ Describe(monadicTestcase) {
       Assert::That( luple(1,2,3)(get<0>), Equals(1) );
       Assert::That( luple(1,2,3)(get<1>), Equals(2) );
       Assert::That( luple(1,2,3)(get<2>), Equals(3) );
+    }
 
+    It(should_pick){
+      int i=0;
+      int toExpected[3]={3, 2, 1};
+      luple(1,2,3)(pick)(2_N, 1_N, 0_N)(each)([&](auto item){
+          Assert::That( item ,  Equals( toExpected[i++] ) );
+      });
+      Assert::That( i , Equals(3) );
     }
 
 
