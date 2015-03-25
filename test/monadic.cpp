@@ -57,6 +57,15 @@ Describe(monadicTestcase) {
       Assert::That( i , Equals(3) );
     }
 
+    It(should_find_element_by_type){
+      auto x=luple(true,1.2,3);
+
+      auto getInt = concat(0)(x)(findIn);
+      Assert::That( (x)(getInt) , Equals(3) );
+
+
+    }
+
 
 
   };
