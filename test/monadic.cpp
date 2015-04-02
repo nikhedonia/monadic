@@ -59,23 +59,23 @@ Describe(monadicTestcase) {
 
     It(should_find_element_by_type){
       auto x=luple(true,1.2,3);
-
       auto getInt = concat(0)(x)(findIn);
       Assert::That( (x)(getInt) , Equals(3) );
+    }
 
+    It(should_remove_duplicate_types){
+      auto x=luple(1,true,1.2,3);
+      (x)(removeDuplicateTypes);
 
     }
 
 
-
   };
-
 };
 
 
 
 
-int main(int argc, char const* argv[])
-{
+int main(int argc, char const* argv[]) {
   return TestRunner::RunAllTests(argc, argv);
 }

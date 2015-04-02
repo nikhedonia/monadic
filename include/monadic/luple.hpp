@@ -160,6 +160,34 @@ struct FindIn{
 
 static auto findIn = FindIn();
 
+struct RemoveDupTypes{
+
+  template<class X>
+  auto operator()(X&&x){
+    return luple(forward<X>(x));
+  }
+
+  auto operator()(){
+    return luple();
+  }
+
+
+  template<class X,  class...Ys, // when X is unique
+  REQUIRES(is_same<decltype(findIn(declval<X>(),declval<Ys>()...)),void>::value)>
+  auto operator()(X&&x, Ys&&...ys){
+    return luple(forward<X>(x))(concat)((*this)(forward<Ys>(ys)...));
+  }
+
+  template<class X,  class...Ys, // otherwise, remove X
+  REQUIRES(!is_same<decltype(findIn(declval<X>(),declval<Ys>()...)),void>::value)>
+  decltype(auto) operator()(X&&x, Ys&&...ys){
+    return (*this)(forward<Ys>(ys)...);
+  }
+
+};
+
+static auto removeDuplicateTypes = RemoveDupTypes();
+
 
 
 }
