@@ -66,8 +66,26 @@ Describe(monadicTestcase) {
     It(should_remove_duplicate_types){
       auto x=luple(1,true,1.2,3);
       (x)(removeDuplicateTypes);
+    }
+
+
+    It(should_zip){
+      auto x=luple(1,2);
+      auto y=x;
+      auto add=[](auto a,auto b){ return a+b; };
+      auto r = (x)(zip(add))(y);
+
+      bool c=0;
+      r([&c](auto x,auto y){
+        Assert::That( x , Equals(2) );
+        Assert::That( y , Equals(4) );
+        c=1;
+      });
+
+      Assert::That(c);
 
     }
+
 
 
   };

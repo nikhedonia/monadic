@@ -136,6 +136,7 @@ static auto pick = [](auto...x){
 };
 
 
+template<template<class,class> class check=is_same>
 struct FindIn{
 
   template<unsigned i=0,class X=bool>
@@ -144,13 +145,13 @@ struct FindIn{
 
 
   template<unsigned i=0, class X, class Y, class...Ys,
-  REQUIRES(is_same<decay_t<X>,decay_t<Y>>::value) >
+  REQUIRES(check<decay_t<X>,decay_t<Y>>::value) >
   constexpr auto operator()(X,Y,Ys...)const {
     return get<i>;
   }
 
   template<unsigned i=0, class X, class Y, class...Ys,
-  REQUIRES(!is_same<decay_t<X>,decay_t<Y>>::value) >
+  REQUIRES(!check<decay_t<X>,decay_t<Y>>::value) >
   constexpr auto operator()(X&&x, Y y, Ys...ys)const {
     return this->operator()<i+1>(x,ys...);
   }
@@ -158,7 +159,7 @@ struct FindIn{
 };
 
 
-static auto findIn = FindIn();
+static auto findIn = FindIn<>();
 
 struct RemoveDupTypes{
 
@@ -186,7 +187,21 @@ struct RemoveDupTypes{
 
 };
 
+
 static auto removeDuplicateTypes = RemoveDupTypes();
+
+static auto zip = [](auto Z){
+  return [Z](auto&&...X){
+    auto L=luple(FORWARD(X)...);
+    return [L,Z](auto L2){
+      return L(concat)(L2)([Z](decltype(X)&&...B, auto&&...A){
+          return luple(Z(FORWARD(A),FORWARD(B))...);
+      });
+    };
+  };
+};
+
+
 
 
 
