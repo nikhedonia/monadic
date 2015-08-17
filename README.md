@@ -24,13 +24,27 @@ auto x = luple(1,2.0,"foo"); //heterogenus tuple;
 
 (x)(concat)(y)  // combines two luples
 
-(x)(append(1,2,3,4))  // append some elements
-(x)(prepend(1,2,3,4)) // prepend some elements
+(x)(append)(1,2,3,4)  // append some elements
+(x)(prepend)(1,2,3,4) // prepend some elements
 
 concat(1.0)(x)(findIn) // find first float in x and return a getter
 (x)(removeDuplicateTypes) // remove all duplicate types from x
 
+auto adder = zip([](auto x, auto y){ return x+y; });
+(x)(add)(y); // creates a tuple containing (x1+y1) ,..., (xn+yn) 
+
 ```
+
+## Roadmap
+
+### named observable tuples
+
+### Set operations
+- union
+- intersect
+- subtract
+
+### algebraic types
 
 
 
