@@ -37,14 +37,9 @@ auto adder = zip([](auto x, auto y){ return x+y; });
 
 ## Roadmap
 
-### named observable tuples
-
-### Set operations
-- union
-- intersect
-- subtract
-
-### algebraic types
+- named (observable) tuples
+- Set operations
+- algebraic types
 
 
 
