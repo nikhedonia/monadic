@@ -8,9 +8,10 @@ This library provides a fast lambda based tuple implementation, enabling a monad
 ##Examples:
 
 ```c++
+#include <monadic>
 using namespace monadic;
 
-auto x = luple(1,2.0,"foo"); //heterogenus tuple;
+auto x = apply(1,2.0,"foo"); //heterogenus tuple;
 (x)( get<0> ); // get first element
 
 (x)(each)([](auto x){ //print each element
@@ -30,8 +31,8 @@ auto x = luple(1,2.0,"foo"); //heterogenus tuple;
 concat(1.0)(x)(findIn) // find first float in x and return a getter
 (x)(removeDuplicateTypes) // remove all duplicate types from x
 
-auto adder = zip([](auto x, auto y){ return x+y; });
-(x)(add)(y); // creates a tuple containing (x1+y1) ,..., (xn+yn) 
+auto adder = fold([](auto x, auto y){ return x+y; });
+(x)(add)(y); // creates a tuple containing (x1+y1) ,..., (xn+yn)
 
 ```
 

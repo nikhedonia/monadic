@@ -1,0 +1,11 @@
+#ifndef MONADIC
+#define MONADIC
+
+#include "impl/macro.hpp"
+#include "impl/apply.hpp"
+#include "impl/pick.hpp"
+#include "impl/concat.hpp"
+#include "impl/fold.hpp"
+#include "impl/find.hpp"
+
+#endif

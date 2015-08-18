@@ -1,6 +1,9 @@
 #ifndef MONADIC_MACRO_HPP
 #define MONADIC_MACRO_HPP
 
+#include <type_traits>
+
+namespace monadic {
 
 #define FORWARD(x) std::forward<decltype(x)>(x)
 #define REQUIRES(...) class=std::enable_if_t<(__VA_ARGS__)>
@@ -26,6 +29,17 @@ constexpr int C2N(arg Arg, args...Args) { return C2N<args...>(Args...) + Arg*Pow
 #define CHAR(CH) MCC(STRING(CH))
 
 
+using std::forward;
+using std::is_same;
+using std::declval;
+using std::decay_t;
+using std::enable_if_t;
+using std::is_convertible;
+using std::integral_constant;
+using std::make_index_sequence;
+using std::size_t;
 
+
+}
 
 #endif
